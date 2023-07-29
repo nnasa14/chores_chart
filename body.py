@@ -13,6 +13,22 @@ cursor.execute('''
     )
 ''')
 
+# Add data to table
+cursor.executemany('INSERT INTO chores_chart (chore, name, day) VALUES (?,?)'[
+    ('Trash', 'Marty', 'Tuesday'),
+    ('Dishes', 'Flexible', 'Daily'),
+    ('Meal Prep', 'Janice', 'Sunday')
+])
+
+# Retrieve data
+cursor.execute('SELECT * FROM chores_chart')
+data = cursor.fetchall()
+
+# Display data
+for row in data:
+    print(row)
+
 # Commit and close
 conn.commit()
 conn.close()
+

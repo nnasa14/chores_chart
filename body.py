@@ -19,11 +19,13 @@ cursor.execute('''
 ''') 
 
 # Add data to table
-cursor.executemany('INSERT INTO chores_chart (chore, name, day) VALUES (?,?)'[
+insert_data = [
     ('Trash', 'Marty', 'Tuesday'),
     ('Dishes', 'Flexible', 'Daily'),
     ('Meal Prep', 'Janice', 'Sunday')
-])
+]
+
+cursor.executemany('INSERT INTO chores_chart (chore, name, day) VALUES (?, ?, ?)', insert_data)
 
 # Retrieve data
 cursor.execute('SELECT * FROM chores_chart')
@@ -36,4 +38,3 @@ for row in data:
 # Commit and close
 conn.commit()
 conn.close()
-

@@ -1,40 +1,53 @@
 import sqlite3
 
-# Connect to database
-conn = sqlite3.connect('chores.db')
-cursor = conn.cursor()
+class Chores:
 
-# Create table
-"""
-    chore(str): title of chore
-    name(str): person(s) delegated to chore
-    day(str): day(s) which chore is expected to be done
-"""
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS chores_chart (
-               chore TEXT NOT NULL PRIMARY KEY,     
-               name TEXT,
-               day TEXT
-    )
-''') 
+    def __init__(self):
+        """ Create table
+ 
+        chore(str): title of chore
+        name(str): person(s) delegated to chore
+        day(str): day(s) which chore is expected to be done
 
-# Add data to table
-insert_data = [
-    ('Trash', 'Marty', 'Tuesday'),
-    ('Dishes', 'Flexible', 'Daily'),
-    ('Meal Prep', 'Janice', 'Sunday')
-]
+         Connect to database"""
+        conn = sqlite3.connect('chores.db')
+        self.conn = conn
+        cursor = conn.cursor()
+        self.cursor = cursor
+        
+        self.table = cursor.execute('''
+            CREATE TABLE IF NOT EXISTS chores_chart (
+                    chore TEXT NOT NULL PRIMARY KEY,     
+                    name TEXT,
+                    day TEXT
+            )
+        ''') 
 
-cursor.executemany('INSERT INTO chores_chart (chore, name, day) VALUES (?, ?, ?)', insert_data)
+    def add_data(self, chore, name, day):
+        self.cursor.execute('INSERT INTO chores_chart (chore, name, day) VALUES (?, ?, ?)', chore, name, day)
 
-# Retrieve data
-cursor.execute('SELECT * FROM chores_chart')
-data = cursor.fetchall()
+        self.conn.commit()
+        self.conn.close()
 
-# Display data
-for row in data:
-    print(row)
+    def display_data(self):
+            # Retrieve data
+        self.cursor.execute('SELECT * FROM chores_chart')
+        data = self.cursor.fetchall()
 
-# Commit and close
-conn.commit()
-conn.close()
+        # Display data
+        for row in data:
+            print(row)
+
+        # Commit and close
+        self.conn.commit()
+        self.conn.close()
+    
+if __name__ == "__main__":
+    chores_instance = Chores()
+
+    # Add data to table
+    Chores.add_data = [
+        ('Trash', 'Marty', 'Tuesday'),
+        ('Dishes', 'Flexible', 'Daily'),
+        ('Meal Prep', 'Janice', 'Sunday')
+    ]

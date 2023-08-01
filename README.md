@@ -1,2 +1,2 @@
-# chores_chart
-A simple chores chart using SQLite and SQLalchemy
+# task_calendar
+A simple task calendar using SQLite3

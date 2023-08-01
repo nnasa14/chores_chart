@@ -23,11 +23,17 @@ class Chores:
             )
         ''') 
 
+    def close_commit(self):
+        # Commit and close
+        self.conn.commit()
+        self.conn.close()
+
     def add_data(self, chore, name, day):
         self.cursor.execute('INSERT INTO chores_chart (chore, name, day) VALUES (?, ?, ?)', chore, name, day)
 
         self.conn.commit()
         self.conn.close()
+        Chores.close_commit()
 
     def display_data(self):
             # Retrieve data
@@ -38,9 +44,7 @@ class Chores:
         for row in data:
             print(row)
 
-        # Commit and close
-        self.conn.commit()
-        self.conn.close()
+        Chores.close_commit()
     
 if __name__ == "__main__":
     chores_instance = Chores()

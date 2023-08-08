@@ -3,9 +3,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
+Session = sessionmaker(bind=engine)
+session = Session()
 
 class MyTable(Base):
-    __tablename__ = 'my_table'
+    __tablename__ = 'task_board'
     task = Column(String, primary_key=True, nullable=False)
     assignee = Column(String)
     day = Column(String)
@@ -16,31 +18,26 @@ engine = create_engine('sqlite:///tasks.db')
 # Create all defined tables
 Base.metadata.create_all(engine)
 
-Session = sessionmaker(bind=engine)
-session = Session()
+def insert_data(data):
+    # Add data and commit to table
+    session.add_all(data)
+    session.commit()
+    session.close()
 
-# Insert data into the table
-data = [
-    MyTable(task='dishes', assignee='Alice', day='mon'),
-    MyTable(task='trash', assignee='Bob', day='tue'),
-    MyTable(task='laundry', assignee='Charlie', day='fri')
-]
+def display_table():
+    # Retrieve data from the table
+    data = session.query(MyTable).all()
 
-session.add_all(data)
-session.commit()
+    # Display the dataS
+    for row in data:
+        print(row.task, row.assignee, row.day)
 
-# Close the session
-session.close()
+    session.close()
 
-Session = sessionmaker(bind=engine)
-session = Session()
-
-# Retrieve data from the table
-data = session.query(MyTable).all()
-
-# Display the data
-for row in data:
-    print(row.task, row.assignee, row.day)
-
-# Close the session
-session.close()
+if __name__ == '__main__':
+    data = [
+        MyTable(task='dishes', assignee='Janet', day='mon'),
+        MyTable(task='trash', assignee='Marty', day='tue'),
+        MyTable(task='laundry', assignee='Silvia', day='fri')
+    ]
+    insert_data(data)

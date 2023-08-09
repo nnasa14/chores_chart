@@ -4,11 +4,17 @@ from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
-class MyTable(Base):
+class UnfinishedTask(Base):
     __tablename__ = 'task_board'
-    task = Column(String, primary_key=True, nullable=False)
+    task = Column(String, primary_key=True)
     assignee = Column(String)
     day = Column(String)
+    status = Column(String, default='unfinished')
+
+class CompletedTask(Base):
+    __tablename__ = 'completed'
+    task = Column(String, primary_key=True)
+    status = Column(String, default='completed')
 
 # Create a database engine
 engine = create_engine('sqlite:///tasks.db')
@@ -26,20 +32,24 @@ def insert_data(data):
     session.commit()
     session.close()
 
-def display_table():
+def display_table(MyTable):
     # Retrieve data from the table
     data = session.query(MyTable).all()
 
-    # Display the dataS
-    for row in data:
-        print(row.task, row.assignee, row.day)
+    # Display the data
+    if MyTable == 'UnfinishedTask'
+        for row in data:
+            print(row.task, row.assignee, row.day, row.status)
+    else:
+        for row in data:
+            print(row.task, row.status)
 
     session.close()
 
 if __name__ == '__main__':
     data = [
-        MyTable(task='dishes', assignee='Janet', day='mon'),
-        MyTable(task='trash', assignee='Marty', day='tue'),
-        MyTable(task='laundry', assignee='Silvia', day='fri')
+        UnfinishedTask(task='dishes', assignee='Janet', day='mon'),
+        UnfinishedTask(task='trash', assignee='Marty', day='tue'),
+        UnfinishedTask(task='laundry', assignee='Silvia', day='fri')
     ]
     insert_data(data)

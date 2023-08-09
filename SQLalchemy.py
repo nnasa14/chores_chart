@@ -3,8 +3,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
-Session = sessionmaker(bind=engine)
-session = Session()
 
 class MyTable(Base):
     __tablename__ = 'task_board'
@@ -17,6 +15,10 @@ engine = create_engine('sqlite:///tasks.db')
 
 # Create all defined tables
 Base.metadata.create_all(engine)
+
+# Create a session
+Session = sessionmaker(bind=engine)
+session = Session()
 
 def insert_data(data):
     # Add data and commit to table

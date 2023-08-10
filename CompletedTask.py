@@ -34,3 +34,20 @@ def display_table():
         print(row.task, row.status)
 
     session.close()
+
+def mark_as_complete(task):
+    data = session.query(CompletedTask).all()
+
+    for row in data:
+        if row.task == task:
+            # Mark as complete
+            pass
+
+if __name__ == '__main__':
+    data = [
+        CompletedTask(task='dishes', assignee='Janet', day='mon'),
+        CompletedTask(task='trash', assignee='Marty', day='tue'),
+        CompletedTask(task='laundry', assignee='Silvia', day='fri')
+    ]
+    insert_data(data)
+    display_table()

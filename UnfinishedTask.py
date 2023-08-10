@@ -11,11 +11,6 @@ class UnfinishedTask(Base):
     day = Column(String)
     status = Column(String, default='unfinished')
 
-class CompletedTask(Base):
-    __tablename__ = 'completed'
-    task = Column(String, primary_key=True)
-    status = Column(String, default='completed')
-
 # Create a database engine
 engine = create_engine('sqlite:///tasks.db')
 
@@ -32,17 +27,13 @@ def insert_data(data):
     session.commit()
     session.close()
 
-def display_table(MyTable):
+def display_table():
     # Retrieve data from the table
-    data = session.query(MyTable).all()
+    data = session.query(UnfinishedTask).all()
 
     # Display the data
-    if MyTable == 'UnfinishedTask'
-        for row in data:
-            print(row.task, row.assignee, row.day, row.status)
-    else:
-        for row in data:
-            print(row.task, row.status)
+    for row in data:
+        print(row.task, row.assignee, row.day, row.status)
 
     session.close()
 
@@ -53,3 +44,4 @@ if __name__ == '__main__':
         UnfinishedTask(task='laundry', assignee='Silvia', day='fri')
     ]
     insert_data(data)
+    display_table()

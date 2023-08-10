@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, MetaData, Table
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 
 Base = declarative_base()
 
@@ -21,6 +22,11 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+def clear_table(session):
+    session.query(UnfinishedTask).delete()
+    session.commit()
+    session.close()
+
 def insert_data(data):
     # Add data and commit to table
     session.add_all(data)
@@ -33,9 +39,20 @@ def display_table():
 
     # Display the data
     for row in data:
-        print(row.task, row.assignee, row.day, row.status)
+        print(row.task, row.status)
 
     session.close()
+
+def mark_as_complete(task):
+    data = session.query(UnfinishedTask).all()
+
+    for row in data:
+        if row.task == task:
+            row.status = 'complete'
+
+    session.commit()
+    session.close()
+
 
 if __name__ == '__main__':
     data = [
@@ -44,4 +61,8 @@ if __name__ == '__main__':
         UnfinishedTask(task='laundry', assignee='Silvia', day='fri')
     ]
     insert_data(data)
+    mark_as_complete('dishes')
     display_table()
+
+    """clear_table(session)
+    display_table()"""

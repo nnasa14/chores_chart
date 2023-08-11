@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, MetaData, Table
+from sqlalchemy import create_engine, Column, Integer, String, MetaData, Table, CHAR
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
@@ -7,10 +7,20 @@ Base = declarative_base()
 
 class UnfinishedTask(Base):
     __tablename__ = 'task_board'
+
     task = Column(String, primary_key=True)
     assignee = Column(String)
     day = Column(String)
-    status = Column(String, default='unfinished')
+    status = Column(CHAR, default='O')
+
+    def __init__ (self, task, assignee, day, status):
+        self.task = task
+        self.assignee = assignee
+        self.day = day
+        self.status = status
+
+    def __repr__(self):
+        return f"{self.task}: {self.assignee} {self.day} ({self.status})"
 
 # Create a database engine
 engine = create_engine('sqlite:///tasks.db')
@@ -48,19 +58,19 @@ def mark_as_complete(task):
 
     for row in data:
         if row.task == task:
-            row.status = 'complete'
+            row.status = 'X'
 
     session.commit()
     session.close()
 
 
 if __name__ == '__main__':
-    data = [
+    """data = [
         UnfinishedTask(task='dishes', assignee='Janet', day='mon'),
         UnfinishedTask(task='trash', assignee='Marty', day='tue'),
         UnfinishedTask(task='laundry', assignee='Silvia', day='fri')
     ]
-    insert_data(data)
+    insert_data(data)"""
     mark_as_complete('dishes')
     display_table()
 

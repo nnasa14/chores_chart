@@ -23,7 +23,7 @@ class UnfinishedTask(Base):
         return f"{self.task}: {self.assignee} {self.day} ({self.status})"
 
 # Create a database engine
-engine = create_engine('sqlite:///tasks.db')
+engine = create_engine('sqlite:///tasks.db', echo=True)
 
 # Create all defined tables
 Base.metadata.create_all(engine)

@@ -2,6 +2,9 @@ from sqlalchemy import create_engine, Column, Integer, String, MetaData, Table, 
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
+import configparser
+
+
 
 Base = declarative_base()
 
@@ -11,7 +14,7 @@ class UnfinishedTask(Base):
     task = Column(String, primary_key=True)
     assignee = Column(String)
     day = Column(String)
-    status = Column(CHAR, default='O')
+    status = Column(String, default='O')
 
     def __init__ (self, task, assignee, day, status):
         self.task = task
@@ -65,14 +68,22 @@ def mark_as_complete(task):
 
 
 if __name__ == '__main__':
-    """data = [
-        UnfinishedTask(task='dishes', assignee='Janet', day='mon'),
-        UnfinishedTask(task='trash', assignee='Marty', day='tue'),
-        UnfinishedTask(task='laundry', assignee='Silvia', day='fri')
+    config = configparser.ConfigParser()
+    config["General"] = {
+        "title": "Task Calendar",
+        "version": "1.0",
+        "debug": "True"
+    }
+
+    data = [
+        UnfinishedTask(task='dishes', assignee='Janet', day='mon', status='complete'),
+        UnfinishedTask(task='trash', assignee='Marty', day='tue', status='complete'),
+        UnfinishedTask(task='laundry', assignee='Silvia', day='fri', status='incomplete')
     ]
-    insert_data(data)"""
-    mark_as_complete('dishes')
+    insert_data(data)
+    
+    """mark_as_complete('dishes')
     display_table()
 
-    """clear_table(session)
+    clear_table(session)
     display_table()"""

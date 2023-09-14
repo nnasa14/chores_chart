@@ -3,6 +3,7 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
 import configparser
+import logging
 
 
 
@@ -74,6 +75,13 @@ if __name__ == '__main__':
         "version": "1.0",
         "debug": "True"
     }
+
+    logging.basicConfig(level=logging.WARNING, format="%(asctime)s %(levelname)s %(message)s", datefmt="%Y-%m-%d %H: %M: %S", filename="basic.log")         #DEBUG, INFO
+    logging.debug("This is a debug message.")           # Diagnosis and troubleshooting
+    logging.info("This is an info message.")            # Confirmation program is working as expected
+    logging.warning("This is a warning message.")       # Something unexpected happened that may cause issue in the future, but still working as expected
+    logging.error("This is an error message.")          # More serious problem, software is not able to execute code
+    logging.critical("This is a critical message.")     # Serious error, program may be unanle to continue running
 
     data = [
         UnfinishedTask(task='dishes', assignee='Janet', day='mon', status='complete'),

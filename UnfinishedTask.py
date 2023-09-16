@@ -70,6 +70,16 @@ def change_status(task):
     session.commit()
     session.close()
 
+def sort_data():
+    day = UnfinishedTask.day
+
+    results = session.query(UnfinishedTask).order_by(day).all()
+
+    for row in results:
+        print(row)
+
+    session.close()
+
 
 config = configparser.ConfigParser()
 config["General"] = {
@@ -93,7 +103,7 @@ if __name__ == '__main__':
     ]
     insert_data(data)"""
     
-    change_status('laundry')
+    """change_status('laundry')"""
     """display_table()"""
 
     """clear_table(session)

@@ -57,15 +57,19 @@ def display_table():
 
     session.close()
 
-def mark_as_complete(task):
+def change_status(task):
     data = session.query(UnfinishedTask).all()
 
     for row in data:
         if row.task == task:
-            row.status = 'X'
+            if row.status == 'X':
+                row.status = 'O'
+            else:
+                row.status = "X"
 
     session.commit()
     session.close()
+
 
 config = configparser.ConfigParser()
 config["General"] = {
@@ -89,7 +93,7 @@ if __name__ == '__main__':
     ]
     insert_data(data)"""
     
-    mark_as_complete('laundry')
+    change_status('laundry')
     """display_table()"""
 
     """clear_table(session)

@@ -67,31 +67,30 @@ def mark_as_complete(task):
     session.commit()
     session.close()
 
+config = configparser.ConfigParser()
+config["General"] = {
+    "title": "Task Calendar",
+    "version": "1.0",
+    "debug": "True"
+}
+
+logging.basicConfig(level=logging.WARNING, format="%(asctime)s %(levelname)s %(message)s", datefmt="%Y-%m-%d %H: %M: %S", filename="basic.log")         #DEBUG, INFO
+logging.debug("This is a debug message.")           # Diagnosis and troubleshooting
+logging.info("This is an info message.")            # Confirmation program is working as expected
+logging.warning("This is a warning message.")       # Something unexpected happened that may cause issue in the future, but still working as expected
+logging.error("This is an error message.")          # More serious problem, software is not able to execute code
+logging.critical("This is a critical message.")     # Serious error, program may be unanle to continue running
 
 if __name__ == '__main__':
-    config = configparser.ConfigParser()
-    config["General"] = {
-        "title": "Task Calendar",
-        "version": "1.0",
-        "debug": "True"
-    }
-
-    logging.basicConfig(level=logging.WARNING, format="%(asctime)s %(levelname)s %(message)s", datefmt="%Y-%m-%d %H: %M: %S", filename="basic.log")         #DEBUG, INFO
-    logging.debug("This is a debug message.")           # Diagnosis and troubleshooting
-    logging.info("This is an info message.")            # Confirmation program is working as expected
-    logging.warning("This is a warning message.")       # Something unexpected happened that may cause issue in the future, but still working as expected
-    logging.error("This is an error message.")          # More serious problem, software is not able to execute code
-    logging.critical("This is a critical message.")     # Serious error, program may be unanle to continue running
-
-    data = [
+    """data = [
         UnfinishedTask(task='dishes', assignee='Janet', day='mon', status='complete'),
         UnfinishedTask(task='trash', assignee='Marty', day='tue', status='complete'),
         UnfinishedTask(task='laundry', assignee='Silvia', day='fri', status='incomplete')
     ]
-    insert_data(data)
+    insert_data(data)"""
     
-    """mark_as_complete('dishes')
-    display_table()
+    mark_as_complete('laundry')
+    """display_table()"""
 
-    clear_table(session)
+    """clear_table(session)
     display_table()"""
